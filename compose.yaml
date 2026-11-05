@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+  app:
+     build: .
+     env_file: .env
+     environment:
+       DB_HOST: db
+     volumes:
+       - ./feed_task:/app/feed_task:ro
+     depends_on:
+       db:
+         condition: service_healthy
+
+
+volumes:
+  pgdata:

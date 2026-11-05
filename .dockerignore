@@ -1,0 +1,4 @@
+.env
+safeboard.db
+__pycache__
+/feed_task
